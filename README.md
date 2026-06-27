@@ -4,20 +4,18 @@
 ## <font style="color:rgb(15, 17, 21);">实验简介</font>
 <font style="color:rgb(15, 17, 21);">本项目使用 Taichi 高性能计算框架，实现了一个基于 Phong光照模型 的交互式3D渲染器。通过光线投射技术，在屏幕上实时渲染一个红色球体和一个紫色圆锥，并提供了材质参数的实时调节功能，帮助理解和掌握局部光照的基本原理。</font>
 
-<font style="color:rgb(15, 17, 21);"></font>
 
 ## 核心功能实现
 ### 场景构建
 #### <font style="color:rgb(15, 17, 21);">几何体定义</font>
-+ <font style="color:rgb(15, 17, 21);">红色球体: 圆心 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(-1.2, -0.2, 0)</font>`<font style="color:rgb(15, 17, 21);">，半径 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">1.2</font>`<font style="color:rgb(15, 17, 21);">，颜色 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(0.8, 0.1, 0.1)</font>`
-+ <font style="color:rgb(15, 17, 21);">紫色圆锥</font><font style="color:rgb(15, 17, 21);">: 顶点</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(1.2, 1.2, 0)</font>`<font style="color:rgb(15, 17, 21);">，底面中心</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(1.2, -1.4, 0)</font>`<font style="color:rgb(15, 17, 21);">，底面半径</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">1.2</font>`<font style="color:rgb(15, 17, 21);">，颜色</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(0.6, 0.2, 0.8)</font>`
++ <font style="color:rgb(15, 17, 21);">红色球体: 圆心 (-1.2, -0.2, 0)，半径 1.2，颜色 (0.8, 0.1, 0.1)
++ <font style="color:rgb(15, 17, 21);">紫色圆锥: 顶点(1.2, 1.2, 0)，底面中心(1.2, -1.4, 0)，底面半径1.2，颜色(0.6, 0.2, 0.8)
 
 #### <font style="color:rgb(15, 17, 21);">摄像机与光源</font>
-+ <font style="color:rgb(15, 17, 21);">摄像机位置</font><font style="color:rgb(15, 17, 21);">:</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(0, 0, 5)</font>`<font style="color:rgb(15, 17, 21);"> </font><font style="color:rgb(15, 17, 21);">(固定视角)</font>
-+ <font style="color:rgb(15, 17, 21);">点光源位置</font><font style="color:rgb(15, 17, 21);">:</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(2, 3, 4)</font>`
-+ <font style="color:rgb(15, 17, 21);">光源颜色</font><font style="color:rgb(15, 17, 21);">: 纯白光</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(1.0, 1.0, 1.0)</font>`
-+ <font style="color:rgb(15, 17, 21);">背景颜色: 深青色 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">(0.05, 0.15, 0.15)</font>`
-
++ <font style="color:rgb(15, 17, 21);">摄像机位置:(0, 0, 5)(固定视角)
++ <font style="color:rgb(15, 17, 21);">点光源位置:(2, 3, 4)
++ <font style="color:rgb(15, 17, 21);">光源颜色: 纯白光(1.0, 1.0, 1.0)
++ <font style="color:rgb(15, 17, 21);">背景颜色: 深青色 (0.05, 0.15, 0.15)
 
 
 ### <font style="color:rgb(15, 17, 21);"> 光线求交与深度测试 </font>
@@ -33,7 +31,7 @@ delta = b * b - 4.0 * c
 ```
 
 #### 圆锥求交算法
-<font style="color:rgb(15, 17, 21);">将光线方程代入圆锥隐式方程 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">x² + z² = k(y-h)²</font>`<font style="color:rgb(15, 17, 21);">，其中 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">k = (r/H)²</font>`<font style="color:rgb(15, 17, 21);">，求解二次方程：</font>
+将光线方程代入圆锥隐式方程x² + z² = k(y-h)²，其中 k = (r/H)²，求解二次方程：
 
 ```plain
 A = rd.x² + rd.z² - k * rd.y²
@@ -43,8 +41,8 @@ C = ro_local.x² + ro_local.z² - k * ro_local.y²
 
 <font style="color:rgb(15, 17, 21);">关键优化:</font>
 
-+ <font style="color:rgb(15, 17, 21);">验证交点在圆锥高度范围内</font><font style="color:rgb(15, 17, 21);"> </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">[-H, 0]</font>`
-+ <font style="color:rgb(15, 17, 21);">选择较近的有效交点 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">t_first</font>`<font style="color:rgb(15, 17, 21);"> 或 </font>`<font style="color:rgb(15, 17, 21);background-color:rgb(235, 238, 242);">t_second</font>`
++ <font style="color:rgb(15, 17, 21);">验证交点在圆锥高度范围内[-H, 0]
++ <font style="color:rgb(15, 17, 21);">选择较近的有效交点 t_first 或 t_second
 
 #### <font style="color:rgb(15, 17, 21);">Z-Buffer深度竞争</font>
 ```plain
