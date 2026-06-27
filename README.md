@@ -62,9 +62,9 @@ if 0 < t_cone < min_t:  # 圆锥更近
 ### Phong着色器实现
 #### <font style="color:rgb(15, 17, 21);">光照计算流程</font>
 1. **<font style="color:rgb(15, 17, 21);">计算光照向量</font>**<font style="color:rgb(15, 17, 21);">:</font>
-    - `L = normalize(light_pos - p) (光线方向)
-    - `V = normalize(ro - p) (视线方向)
-    - `R = normalize(reflect(-L, N)) (反射方向)
+    - L = normalize(light_pos - p) (光线方向)
+    - V = normalize(ro - p) (视线方向)
+    - R = normalize(reflect(-L, N)) (反射方向)
 2. **<font style="color:rgb(15, 17, 21);">三个分量计算</font>**<font style="color:rgb(15, 17, 21);">:</font>
 
 ```plain
